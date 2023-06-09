@@ -22,9 +22,8 @@ class Polynomial_Endomorphism:
         try:
             for i in range(len(self.polys)):
                 s = s.replace(str(vars[i]), f"f{i}")
-            s = s.replace("f1", str(self.polys[1].as_expr()))
-            s = s.replace("f2", str(self.polys[2].as_expr()))
-            s = s.replace("f3", str(self.polys[3].as_expr()))
+            for j in range(len(self.polys)):
+                s = s.replace(f"f{j}", str(self.polys[j].as_expr()))
         except IndexError:
             raise ValueError("Dimension Mismatch: too many polynomials!")
         return poly(simplify(parse_expr(s)))
