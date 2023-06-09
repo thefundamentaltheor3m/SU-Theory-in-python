@@ -1,0 +1,18 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "su-theory-python"
+version = "2023.0"
+authors = [
+    { name="Sidharth Hariharan", email="sidharth.hariharan21@imperial.ac.uk" },
+]
+description= """
+An attempt to implement polynomial automorphisms and the basics of Shestakov-Umirbaev Theory."""
+dependencies = ["numpy", "sympy"]
+license-file = "LICENSE.md"
+license = "MIT"
+
+[project.urls]
+"Lean4 Formalisation" = "https://github.com/thefundamentaltheor3m/mathlib4-SU-Theory"
