@@ -9,7 +9,7 @@ it makes sense to scalar-multiply by any rational number.
 """
 
 
-class Polynomial_Automorphism:
+class Polynomial_Endomorphism:
     def __init__(self, *polys):
         self.polys = array([poly(p) for p in polys])
 
@@ -22,3 +22,12 @@ class Polynomial_Automorphism:
         except IndexError:
             raise ValueError("Dimension Mismatch: too many polynomials!")
         return poly(simplify(parse_expr(s)))
+
+
+def Jacobian(F):  # The Jacobian Determinant of a polynomial endomorphism
+    pass
+
+
+class Polynomial_Automorphism(Polynomial_Endomorphism):
+    def __init__(self, *polys):
+        super().__init__(self, *polys)
