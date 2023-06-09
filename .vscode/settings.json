@@ -1,0 +1,13 @@
+{
+    "python.terminal.activateEnvInCurrentTerminal": true,
+    "python.defaultInterpreterPath": "$SU-Theory-in-python/SU_venv/bin/python",
+    "githubPullRequests.ignoredPullRequestBranches": [
+        "main"
+    ],
+    "python.linting.pylintEnabled": false,
+    "python.linting.flake8Enabled": true,
+    "python.linting.enabled": true,
+    "python.linting.flake8Args":[
+        "--extend-ignore=D100,D101,D102,D103,D104,D105,D106,D107"
+    ]
+}
