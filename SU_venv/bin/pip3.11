@@ -1,5 +1,5 @@
 #!/bin/sh
-'''exec' "/Users/sidharth/Library/CloudStorage/OneDrive-ImperialCollegeLondon/Undergraduate Studies at Imperial College London/2- Year 2/Modules/2- Group Research Project [MATH50002]/SU-Theory-in-python/SU_venv/bin/python3.11" "$0" "$@"
+'''exec' "/Users/sidharth/Library/CloudStorage/OneDrive-ImperialCollegeLondon/Undergraduate Studies at Imperial College London/2- Year 2/Modules/2- Group Research Project [MATH50002]/SU-Theory-in-python/SU_venv/bin/python" "$0" "$@"
 ' '''
 # -*- coding: utf-8 -*-
 import re
