@@ -1,1 +1,1 @@
-from SU_Theory import polynomial_automorphisms
+from SU_Theory import polynomial_automorphisms  # NOQAF401
