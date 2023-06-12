@@ -1,7 +1,6 @@
 from numpy import array
-from sympy import poly, Poly, simplify, expand, symbols
+from sympy import poly, Poly, expand, symbols
 from sympy.parsing.sympy_parser import parse_expr
-from sympy.polys.polytools import compose
 
 
 """Throughout this file, we will assume that our base field has char 0.
@@ -15,7 +14,7 @@ _vars = [x, y, z]
 
 class Polynomial_Endomorphism:
     def __init__(self, *polys, vars=_vars):
-        self.polys = array([poly(simplify(p.as_expr()), gens=vars)
+        self.polys = array([poly(expand(p.as_expr()), gens=vars)
                             for p in polys])
 
     def __call__(self, p: Poly):
@@ -28,7 +27,7 @@ class Polynomial_Endomorphism:
                 s = s.replace(f"f{j}", str(self.polys[j].as_expr()))
         except IndexError:
             raise ValueError("Dimension Mismatch: too many polynomials!")
-        return poly(simplify(parse_expr(s)))
+        return poly(expand(parse_expr(s)))
 
     def __mul__(self, G):
         try:
