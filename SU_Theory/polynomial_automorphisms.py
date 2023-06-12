@@ -14,7 +14,6 @@ _vars = [x, y, z]
 
 class Polynomial_Endomorphism:
     def __init__(self, *polys, vars=_vars):
-        polys_as_exprs = polys
         try:
             polys_as_exprs = [p.as_expr() for p in polys]
         except AttributeError:
@@ -45,7 +44,7 @@ class Polynomial_Endomorphism:
 
 class Polynomial_Automorphism(Polynomial_Endomorphism):
     def __init__(self, *polys, vars=_vars):
-        super().__init__(self, *polys, vars=vars)
+        super().__init__(*polys, vars=vars)
         # TODO: Check invertibility!
 
     def __call__(self, p: Poly):
