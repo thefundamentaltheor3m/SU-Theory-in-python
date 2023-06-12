@@ -1,6 +1,5 @@
 from numpy import array
-from sympy import poly, Poly, expand, symbols
-from sympy.parsing.sympy_parser import parse_expr
+from sympy import poly, Poly, expand, symbols, subs
 
 
 """Throughout this file, we will assume that our base field has char 0.
@@ -8,8 +7,9 @@ Recall that any field of char 0 contains ℚ as a subfield. Hence,
 it makes sense to scalar-multiply by any rational number.
 """
 
-x, y, z = symbols('x y z')
+x, y, z, a, b, c = symbols('x y z a b c')
 _vars = [x, y, z]
+_syms = [a, b, c]
 
 
 class Polynomial_Endomorphism:
@@ -22,16 +22,18 @@ class Polynomial_Endomorphism:
                             for p in polys_as_exprs])
 
     def __call__(self, p: Poly):
-        s = str(p.as_expr())
+        if not isinstance(p, Poly):
+            p = poly(p)
+        s = p.as_expr()
         vars = p.gens
         try:
             for i in range(len(self.polys)):
-                s = s.replace(str(vars[i]), f"f{i}")
+                s = s.subs(vars[i], _syms[i])
             for j in range(len(self.polys)):
-                s = s.replace(f"f{j}", str(self.polys[j].as_expr()))
+                s = s.subs(_syms[j], self.polys[j].as_expr())
         except IndexError:
             raise ValueError("Dimension Mismatch: too many polynomials!")
-        return poly(expand(parse_expr(s)))
+        return poly(expand(s))
 
     def __mul__(self, G):
         try:
