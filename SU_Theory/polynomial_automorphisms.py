@@ -15,11 +15,11 @@ _vars = [x, y, z]
 class Polynomial_Endomorphism:
     def __init__(self, *polys, vars=_vars):
         try:
-            p = [p.as_expr() for p in p]
+            polys_as_exprs = [p.as_expr() for p in polys]
         except AttributeError:
             pass
         self.polys = array([poly(expand(p), gens=vars)
-                            for p in polys])
+                            for p in polys_as_exprs])
 
     def __call__(self, p: Poly):
         s = str(p.as_expr())
