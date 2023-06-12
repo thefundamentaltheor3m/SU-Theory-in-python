@@ -47,4 +47,7 @@ class Polynomial_Automorphism(Polynomial_Endomorphism):
         return super().__call__(p)
 
     def __mul__(self, G):
-        return super().__mul__(G)
+        if isinstance(G, Polynomial_Automorphism):
+            return Polynomial_Automorphism(*((self * G).polys))
+        else:
+            return super().__mul__(G)
