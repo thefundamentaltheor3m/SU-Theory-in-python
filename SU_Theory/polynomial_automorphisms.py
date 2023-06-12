@@ -14,7 +14,11 @@ _vars = [x, y, z]
 
 class Polynomial_Endomorphism:
     def __init__(self, *polys, vars=_vars):
-        self.polys = array([poly(expand(p.as_expr()), gens=vars)
+        try:
+            p = [p.as_expr() for p in p]
+        except AttributeError:
+            pass
+        self.polys = array([poly(expand(p), gens=vars)
                             for p in polys])
 
     def __call__(self, p: Poly):
