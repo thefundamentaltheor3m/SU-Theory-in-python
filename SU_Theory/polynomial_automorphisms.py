@@ -1,6 +1,7 @@
 from numpy import array
-from sympy import poly, Poly, simplify, symbols
+from sympy import poly, Poly, simplify, expand, symbols
 from sympy.parsing.sympy_parser import parse_expr
+from sympy.polys.polytools import compose
 
 
 """Throughout this file, we will assume that our base field has char 0.
@@ -14,7 +15,8 @@ _vars = [x, y, z]
 
 class Polynomial_Endomorphism:
     def __init__(self, *polys, vars=_vars):
-        self.polys = array([poly(p, gens=vars) for p in polys])
+        self.polys = array([poly(simplify(p.as_expr()), gens=vars)
+                            for p in polys])
 
     def __call__(self, p: Poly):
         s = str(p.as_expr())
@@ -28,11 +30,22 @@ class Polynomial_Endomorphism:
             raise ValueError("Dimension Mismatch: too many polynomials!")
         return poly(simplify(parse_expr(s)))
 
-
-def Jacobian(F):  # The Jacobian Determinant of a polynomial endomorphism
-    pass
+    def __mul__(self, G):
+        try:
+            return Polynomial_Endomorphism(*[
+                self(g) for g in G.polys
+            ])
+        except ValueError:
+            raise ValueError("Dimension Mismatch: too many polynomials!")
 
 
 class Polynomial_Automorphism(Polynomial_Endomorphism):
     def __init__(self, *polys):
         super().__init__(self, *polys)
+        # TODO: Check invertibility!
+
+    def __call__(self, p: Poly):
+        return super().__call__(p)
+
+    def __mul__(self, G):
+        return super().__mul__(G)
