@@ -1,6 +1,5 @@
 from numpy import array, Infinity
-from sympy import poly, Poly, expand, symbols, sqrt # NOQA F401
-import re
+from sympy import poly, Poly, expand, symbols, sqrt # NOQA F401 [`sqrt` imported for ease of testing]
 
 
 """Throughout this file, we will assume that our base field has char 0.
@@ -125,7 +124,7 @@ def highest_degree_terms(p: Poly, w: array, vars=_vars):
     terms = _getterms(p)
     d = w_degree(p, w)
     for t in terms:
-        this_term = t[1]
+        this_term = poly(t[1], gens=vars)
         for i in range(len(vars)):
             this_term *= vars[i]**t[0][i]
         if w_degree(this_term, w) == d:
