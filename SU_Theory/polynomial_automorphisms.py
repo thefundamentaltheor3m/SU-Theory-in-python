@@ -12,9 +12,9 @@ it makes sense to scalar-multiply by any rational number.
 x, y, z, a, b, c = symbols('x y z a b c')
 _vars = [x, y, z]
 _syms = [a, b, c]
-e1 = array([1,0,0])
-e2 = array([0,1,0])
-e3 = array([0,0,1])
+e1 = array([1, 0, 0])
+e2 = array([0, 1, 0])
+e3 = array([0, 0, 1])
 
 
 class Polynomial_Endomorphism:
