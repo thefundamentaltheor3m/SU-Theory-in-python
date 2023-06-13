@@ -78,6 +78,9 @@ class Polynomial_Endomorphism:
         except IndexError:
             raise DimensionError("Dimension Mismatch: too many polynomials!")
 
+    def __iter__(self):
+        return self.polys.__iter__()
+
 
 class Polynomial_Automorphism(Polynomial_Endomorphism):  # Not too important
     def __init__(self, *polys, vars=_vars):
