@@ -110,9 +110,9 @@ def highest_degree_terms(p: Poly, w: array, vars=_vars):
     res = poly(0, gens=vars)
     s = verified_str(p)
     terms = re.split('[+-]', s)
-    terms = [parse_expr(t) for t in terms]
+    terms_exprs = [parse_expr(t) for t in terms]
     d = w_degree(p, w)
-    for t in terms:
+    for t in terms_exprs:
         if w_degree(t, w) == d:
             res += t
     return res
