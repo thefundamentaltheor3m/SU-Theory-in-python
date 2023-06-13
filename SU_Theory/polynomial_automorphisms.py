@@ -1,5 +1,6 @@
-from numpy import array
-from sympy import poly, Poly, expand, symbols
+from numpy import array, Infinity
+from sympy import poly, Poly, expand, symbols, sqrt # NOQA F401
+import re
 
 
 """Throughout this file, we will assume that our base field has char 0.
@@ -44,7 +45,7 @@ class Polynomial_Endomorphism:
             raise ValueError("Dimension Mismatch: too many polynomials!")
 
 
-class Polynomial_Automorphism(Polynomial_Endomorphism):
+class Polynomial_Automorphism(Polynomial_Endomorphism):  # Not too important
     def __init__(self, *polys, vars=_vars):
         super().__init__(*polys, vars=vars)
         # TODO: Check invertibility!
@@ -58,3 +59,29 @@ class Polynomial_Automorphism(Polynomial_Endomorphism):
         # else:
         #     return super().__mul__(G)
         pass
+
+
+def w_degree(p: Poly, w: array, vars=_vars):
+    if len(w) != len(vars):
+        raise ValueError("No. of weights must equal no. of variables!")
+    s = ""
+    vars = [str(v) for v in vars]
+    try:
+        s = str(p.as_expr())
+    except AttributeError:
+        s = str(p)
+    deg = -Infinity
+    terms = re.split('[+-]', s)
+    for t in terms:
+        thisdeg = 0
+        for c in range(len(t)):
+            if t[c] in vars:
+                if t[c+1:c+3] == '**':
+                    try:
+                        thisdeg += int(t[c+3]) * w[vars.index(t[c])]
+                    except Exception:
+                        raise ValueError("Bad inputs!")
+                else:
+                    thisdeg += w[vars.index(t[c])]
+        deg = max(deg, thisdeg)
+    return deg
