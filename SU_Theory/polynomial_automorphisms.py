@@ -16,6 +16,10 @@ e2 = array([0, 1, 0])
 e3 = array([0, 0, 1])
 
 
+class DimensionError(ValueError):
+    pass
+
+
 class Polynomial_Endomorphism:
     def __init__(self, *polys, vars=_vars):
         try:
@@ -36,7 +40,7 @@ class Polynomial_Endomorphism:
             for j in range(len(self.polys)):
                 s = s.subs(_syms[j], self.polys[j].as_expr())
         except IndexError:
-            raise ValueError("Dimension Mismatch: too many polynomials!")
+            raise DimensionError("Dimension Mismatch: too many polynomials!")
         return poly(expand(s))
 
     def __mul__(self, G):
@@ -44,18 +48,35 @@ class Polynomial_Endomorphism:
             return Polynomial_Endomorphism(*[
                 self(g) for g in G.polys
             ])
-        except ValueError:
-            raise ValueError("Dimension Mismatch: too many polynomials!")
+        except DimensionError:
+            raise DimensionError("Dimension Mismatch: too many polynomials!")
 
-    def deg(self, weights):
+    def degs(self, weights):
         return array([
             w_degree(p, weights) for p in self.polys
         ])
+
+    def deg(self, weights):
+        return sum(self.degs(weights))
 
     def w_terms(self, weights):
         return array([
             highest_degree_terms(p, weights) for p in self.polys
         ])
+
+    def __getitem__(self, index):
+        return self.polys[index].as_expr()
+
+    def __len__(self):
+        return len(self.polys)
+
+    def __add__(self, G):
+        try:
+            return Polynomial_Endomorphism(*[
+                self.polys[i] + G.polys[i] for i in range(len(self))
+            ])
+        except IndexError:
+            raise DimensionError("Dimension Mismatch: too many polynomials!")
 
 
 class Polynomial_Automorphism(Polynomial_Endomorphism):  # Not too important
