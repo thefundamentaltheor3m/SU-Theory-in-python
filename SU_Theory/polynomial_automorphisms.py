@@ -108,11 +108,16 @@ def w_degree(p: Poly, w: array, vars=_vars):
 
 def highest_degree_terms(p: Poly, w: array, vars=_vars):
     res = poly(0, gens=vars)
-    s = verified_str(p)
-    terms = re.split('[+-]', s)
-    terms_exprs = [parse_expr(t, evaluate=False) for t in terms]
+    if isinstance(p, Poly):
+        terms = p.terms()
+    else:
+        terms = poly(p).terms()
+    # s = verified_str(p)
+    # terms = re.split('[+-]', s)
+    # terms_exprs = [parse_expr(t, evaluate=False) for t in terms]
     d = w_degree(p, w)
-    for t in terms_exprs:
-        if w_degree(t, w) == d:
-            res += t
+    for t in terms:
+        this_term = t[1] * x**t[0][0] * y**t[0][1] * z**t[0][2]
+        if w_degree(this_term, w) == d:
+            res += this_term
     return res
