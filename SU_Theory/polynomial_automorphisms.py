@@ -1,6 +1,5 @@
 from numpy import array, Infinity
 from sympy import poly, Poly, expand, symbols, sqrt # NOQA F401
-from sympy.parsing import parse_expr
 import re
 
 
