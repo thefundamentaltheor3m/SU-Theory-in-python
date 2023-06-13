@@ -1,5 +1,6 @@
 from numpy import array, Infinity
 from sympy import poly, Poly, expand, symbols, sqrt # NOQA F401
+from sympy.parsing import parse_expr
 import re
 
 
@@ -11,6 +12,9 @@ it makes sense to scalar-multiply by any rational number.
 x, y, z, a, b, c = symbols('x y z a b c')
 _vars = [x, y, z]
 _syms = [a, b, c]
+e1 = array([1,0,0])
+e2 = array([0,1,0])
+e3 = array([0,0,1])
 
 
 class Polynomial_Endomorphism:
@@ -44,6 +48,11 @@ class Polynomial_Endomorphism:
         except ValueError:
             raise ValueError("Dimension Mismatch: too many polynomials!")
 
+    def deg(self, weights):
+        return array([
+            w_degree(p, weights) for p in self.polys
+        ])
+
 
 class Polynomial_Automorphism(Polynomial_Endomorphism):  # Not too important
     def __init__(self, *polys, vars=_vars):
@@ -61,16 +70,21 @@ class Polynomial_Automorphism(Polynomial_Endomorphism):  # Not too important
         pass
 
 
-def w_degree(p: Poly, w: array, vars=_vars):
-    if len(w) != len(vars):
-        raise ValueError("No. of weights must equal no. of variables!")
+def verified_str(p):
     s = ""
-    vars = [str(v) for v in vars]
     try:
         s = str(p.as_expr())
     except AttributeError:
         s = str(p)
+    return s
+
+
+def w_degree(p: Poly, w: array, vars=_vars):
+    if len(w) != len(vars):
+        raise ValueError("No. of weights must equal no. of variables!")
+    vars = [str(v) for v in vars]
     deg = -Infinity
+    s = verified_str(p)
     terms = re.split('[+-]', s)
     for t in terms:
         thisdeg = 0
@@ -85,3 +99,15 @@ def w_degree(p: Poly, w: array, vars=_vars):
                     thisdeg += w[vars.index(t[c])]
         deg = max(deg, thisdeg)
     return deg
+
+
+def highest_degree_terms(p: Poly, w: array, vars=_vars):
+    res = poly(0, gens=vars)
+    s = verified_str(p)
+    terms = re.split('[+-]', s)
+    terms = [parse_expr(t) for t in terms]
+    d = w_degree(p, w)
+    for t in terms:
+        if w_degree(t, w) == d:
+            res += t
+    return res
