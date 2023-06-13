@@ -1,5 +1,5 @@
 from numpy import array
-from sympy import poly, Poly, expand, symbols, subs
+from sympy import poly, Poly, expand, symbols
 
 
 """Throughout this file, we will assume that our base field has char 0.
