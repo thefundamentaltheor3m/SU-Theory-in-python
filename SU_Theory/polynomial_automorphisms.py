@@ -52,7 +52,7 @@ class Polynomial_Endomorphism:
         return array([
             w_degree(p, weights) for p in self.polys
         ])
-    
+
     def highest_degree_terms(self, weights):
         return array([
             highest_degree_terms(p, weights) for p in self.polys
