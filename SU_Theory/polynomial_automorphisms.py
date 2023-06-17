@@ -82,10 +82,10 @@ class Polynomial_Endomorphism:
         return self.polys.__iter__()
     
     def tolatex(self):
-        op = "\\begin{bmatrix}" + latex(self[0])
+        op = "\\begin{bmatrix} " + latex(self[0])
         for i in range(1, len(self)):
-            op += "\\\\" + latex(self[i])
-        op += "\\end{bmatrix}"
+            op += " \\\\ " + latex(self[i])
+        op += " \\end{bmatrix}"
         return op
 
 
