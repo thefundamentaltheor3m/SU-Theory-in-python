@@ -1,5 +1,5 @@
 from numpy import array, Infinity
-from sympy import poly, Poly, expand, symbols, sqrt # NOQA F401 [`sqrt` imported for ease of testing]
+from sympy import poly, Poly, expand, symbols, sqrt, latex # NOQA F401 [`sqrt` imported for ease of testing]
 
 
 """Throughout this file, we will assume that our base field has char 0.
@@ -80,6 +80,13 @@ class Polynomial_Endomorphism:
 
     def __iter__(self):
         return self.polys.__iter__()
+    
+    def tolatex(self):
+        op = "\\begin{bmatrix}" + latex(self[0])
+        for i in range(1, len(self)):
+            op += "\\\\" + latex(self[i])
+        op += "\\end{bmatrix}"
+        return op
 
 
 class Polynomial_Automorphism(Polynomial_Endomorphism):  # Not too important
