@@ -1,5 +1,6 @@
 from numpy import array, Infinity
 from sympy import poly, Poly, expand, symbols, sqrt, latex # NOQA F401 [`sqrt` imported for ease of testing]
+from numbers import Number
 
 
 """Throughout this file, we will assume that our base field has char 0.
@@ -51,6 +52,14 @@ class Polynomial_Endomorphism:
         except DimensionError:
             raise DimensionError("Dimension Mismatch: too many polynomials!")
 
+    def __rmul__(self, G):
+        if isinstance(G, Number):
+            return Polynomial_Endomorphism(*[
+                G * p for p in self.polys
+            ])
+        else:
+            return G * self
+
     def degs(self, weights):
         return array([
             w_degree(p, weights) for p in self.polys
@@ -78,9 +87,18 @@ class Polynomial_Endomorphism:
         except IndexError:
             raise DimensionError("Dimension Mismatch: too many polynomials!")
 
+    def __radd__(self, G):
+        return self + G
+
+    def __sub__(self, G):
+        return self + (-1 * G)
+
+    def __rsub__(self, G):
+        return (-1 * self) + G
+
     def __iter__(self):
         return self.polys.__iter__()
-    
+
     def tolatex(self):
         op = "\\begin{bmatrix} " + latex(self[0])
         for i in range(1, len(self)):
