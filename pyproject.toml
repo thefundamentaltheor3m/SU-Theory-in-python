@@ -10,7 +10,7 @@ authors = [
 ]
 description= """
 An attempt to implement polynomial automorphisms and the basics of Shestakov-Umirbaev Theory."""
-dependencies = ["numpy", "sympy"]
+dependencies = ["numpy", "sympy", "prettytable"]
 license-file = "LICENSE.md"
 license = "MIT"
 
