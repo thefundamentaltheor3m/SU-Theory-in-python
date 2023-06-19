@@ -133,27 +133,32 @@ def verified_str(p):
 
 
 def w_degree(p: Poly, w: array, vars=_vars):
-    if len(w) != len(vars):
+    if len(w[0]) != len(vars):
         raise ValueError("No. of weights must equal no. of variables!")
     deg = -Infinity
+    deg_Vec = [0 for j in range(0,len(vars))]
     terms = _getterms(p)
     for t in terms:
         thisdeg = 0
+        thisdegVec = [ 0 for j in range(0,len(vars)) ]
         for i in range(len(vars)):
-            thisdeg += w[i] * t[0][i]
-        deg = max(deg, thisdeg)
-    return deg
+            thisdeg += w[0][i] * w[1][i] * t[0][i]
+            thisdegVec[i] = w[1][i] * t[0][i]
+        if deg < thisdeg:
+            deg = thisdeg
+            deg_Vec = thisdegVec
+    return (deg,deg_Vec)
 
 
 def highest_degree_terms(p: Poly, w: array, vars=_vars):
     res = poly(0, gens=vars)
     terms = _getterms(p)
-    d = w_degree(p, w)
+    d = w_degree(p, w)[0]
     for t in terms:
         this_term = poly(t[1], gens=vars)
         for i in range(len(vars)):
             this_term *= vars[i]**t[0][i]
-        if w_degree(this_term, w) == d:
+        if w_degree(this_term, w)[0] == d:
             res += this_term
     return res
 
