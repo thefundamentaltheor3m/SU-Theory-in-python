@@ -163,6 +163,39 @@ def highest_degree_terms(p: Poly, w: array, vars=_vars):
     return res
 
 
+# This is for eliminating those terms that are impossible to have the highest degree.
+
+def onlyHigherTerms(P: Poly):
+    terms = _getterms(P)
+    higher = [i for i in range(0,len(terms))]
+    compare = 0
+    for i in range(1,len(terms)):
+        for j in range(0,i):
+            compare = 0
+            if terms[i][0][0] < terms[j][0][0]:
+                compare = -1
+            else:
+                compare = 1
+            for c in range(1,len(terms[0][0])):
+                if (terms[i][0][c] > terms[j][0][c]) and (compare == -1):
+                    compare = 0
+                    break
+                if (terms[i][0][c] < terms[j][0][c]) and (compare == 1):
+                    compare = 0
+                    break
+            if compare == 1:
+                higher.remove(j)
+                break
+            else:
+                if compare == -1:
+                    higher.remove(i)
+                    break
+            compare = 0
+    theRemaining = []
+    for h in higher:
+        theRemaining.append(terms[h])
+    return theRemaining
+
 def _getterms(p):
     if isinstance(p, Poly):
         terms = p.terms()
